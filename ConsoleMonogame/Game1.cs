@@ -16,11 +16,15 @@ namespace ConsoleMonogame.Desktop
         String text = "Type something in the console";
         Thread thread;
         SpriteFont defaultFont;
+        Texture2D gear;
+        Texture2D eye;
+
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            this.IsMouseVisible = true;
         }
 
         /// <summary>
@@ -58,6 +62,8 @@ namespace ConsoleMonogame.Desktop
             // TODO: use this.Content to load your game content here
 
             defaultFont = Content.Load<SpriteFont>("DefaultFont");
+            eye = Content.Load<Texture2D>("eye");
+            gear = Content.Load<Texture2D>("gear");
         }
 
         /// <summary>
@@ -81,6 +87,15 @@ namespace ConsoleMonogame.Desktop
 
             // TODO: Add your update logic here
 
+            var mouse = Mouse.GetState();
+            if (
+                mouse.LeftButton == ButtonState.Pressed && 
+                mouse.X >= 32 && mouse.Y >= 32 && 
+                mouse.X <= 32 + 256 && mouse.Y <= 288 + 256)
+            {
+                Console.WriteLine($"You  clicked on the {(mouse.Y <= 288 ? "eye" : "gear")}!");
+            }
+
             base.Update(gameTime);
         }
 
@@ -97,6 +112,9 @@ namespace ConsoleMonogame.Desktop
             base.Draw(gameTime);
 
             this.spriteBatch.Begin();
+
+            this.spriteBatch.Draw(this.eye, new Vector2(32, 32), Color.White);
+            this.spriteBatch.Draw(this.gear, new Vector2(32, 288), Color.White);
 
             if (this.text != null)
             {
